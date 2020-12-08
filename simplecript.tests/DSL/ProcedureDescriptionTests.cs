@@ -19,8 +19,6 @@ namespace simplescript.tests.DSL
                 Finish();
 
             proc.Execute(new object());
-
-
         }
     }
 }
