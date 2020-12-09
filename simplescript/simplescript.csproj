@@ -9,9 +9,5 @@
     <_Parameter1>simplescript.tests</_Parameter1>
     </AssemblyAttribute>
   </ItemGroup>
-  
-  <ItemGroup>
-    <Folder Include="IOC\" />
-  </ItemGroup>
 
 </Project>

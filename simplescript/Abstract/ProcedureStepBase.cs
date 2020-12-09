@@ -41,5 +41,13 @@ namespace simplescript.Abstract
                 await this.predecessor.Compensate(contextType);
             }
         }
+
+        public async virtual Task CompensatePredecssorOnly(TContextType contextType)
+        {
+            if (this.predecessor != null)
+            {
+                await this.predecessor.Compensate(contextType);
+            }
+        }
     }
 }

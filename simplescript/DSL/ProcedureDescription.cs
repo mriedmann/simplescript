@@ -30,7 +30,7 @@ namespace simplescript.DSL
 
         public ProcedureDescription<TContext> UseService<TService>(Func<TService> factory) where TService : class
         {
-            throw new NotSupportedException("IOC capabilities will be implemented by upcoming relase.");
+            throw new NotSupportedException("IOC capabilities will be implemented by upcoming release.");
         }
 
         public Procedure<TContext> Finish()
