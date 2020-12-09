@@ -13,7 +13,7 @@ namespace exampleservice.SellTicketService.Steps
 
         protected async override Task<bool> StepSpecificExecute(SellTicketContext contextType)
         {
-            var reply = await this.bus.RequestAndReply(new DepositToCustomerCommand());
+            var reply = await this.bus.RequestAndReply(new DepositToCustomerCommand() { Amount = contextType.Command.Ticket.Price });
             if(reply is CouldNotDepositToCustomerEvent)
             {
                 await this.CompensatePredecssorOnly(contextType);
@@ -22,13 +22,14 @@ namespace exampleservice.SellTicketService.Steps
             }
             else
             {
+                contextType.HasWithdrawn = true;
                 return false;
             }
         }
 
         protected async override Task StepSpecificCompensate(SellTicketContext contextType)
         {
-            var reply = await this.bus.RequestAndReply(new WithdrawFromCustomerCommand());
+            var reply = await this.bus.RequestAndReply(new WithdrawFromCustomerCommand() { Amount = contextType.Command.Ticket.Price });
             if (reply is CouldNotWithdrawFromCustomerEvent)
             {
                 // TODO notify asbout compensation failed

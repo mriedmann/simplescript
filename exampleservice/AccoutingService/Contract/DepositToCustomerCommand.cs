@@ -2,5 +2,6 @@
 {
     public class DepositToCustomerCommand
     {
+        public int Amount { get; internal set; }
     }
 }
