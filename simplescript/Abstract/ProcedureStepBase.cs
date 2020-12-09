@@ -20,14 +20,14 @@ namespace simplescript.Abstract
             successor.SetPredecessor(this);
         }
 
-        protected abstract Task StepSpecificExecute(TContextType contextType);
+        protected abstract Task<bool> StepSpecificExecute(TContextType contextType);
      
         protected virtual Task StepSpecificCompensate(TContextType contextType)  { return Task.CompletedTask; }
 
         public async virtual Task Execute(TContextType contextType)
         {
-            await this.StepSpecificExecute(contextType);
-            if (this.successor != null)
+            var compensated = await this.StepSpecificExecute(contextType);
+            if (this.successor != null && !compensated)
             {
                 await this.successor.Execute(contextType);
             }
