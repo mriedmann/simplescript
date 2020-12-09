@@ -17,6 +17,7 @@ namespace exampleservice.SellTicketService.Steps
             if(reply is CouldNotDepositToCustomerEvent)
             {
                 await this.CompensatePredecssorOnly(contextType);
+                contextType.WasCompensated = true;
                 return true;
             }
             else

@@ -16,6 +16,7 @@ namespace exampleservice.SellTicketService.Steps
             if(rowCount == 0 )
             {
                 await this.CompensatePredecssorOnly(contextType);
+                contextType.WasCompensated = true;
                 return true;
             }
             else

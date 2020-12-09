@@ -1,4 +1,5 @@
 ﻿using exampleservice.Framework.Abstract;
+using exampleservice.Framework.BaseFramework;
 using exampleservice.SellTicketService.Contract;
 using exampleservice.SellTicketService.Controller;
 using exampleservice.SellTicketService.Steps;
@@ -11,7 +12,6 @@ namespace exampleservice.SellTicketService
 {
     public class SellTicketService
     {
-
         private Lazy<Procedure<SellTicketContext>> procedure;
         private IMessageBus bus;
         private ISellTicketServiceDataBaseRepository dataBaseRepository;
@@ -23,10 +23,19 @@ namespace exampleservice.SellTicketService
             this.dataBaseRepository = dataBaseRepository ?? throw new ArgumentNullException(nameof(dataBaseRepository));
         }
 
-        public async Task Handle(SellTicketCommand command)
+        public async Task<EventBase> Handle(SellTicketCommand command)
         {
             this.VerifyIputArguments(command);
-            await procedure.Value.Execute(new SellTicketContext() { Command = command });
+            var context = new SellTicketContext() { Command = command };
+            await procedure.Value.Execute(context);
+            if (context.WasCompensated)
+            {
+                return new CouldNotSellTicketEvent { TicketNumber = command.Ticket.TicketNumber }; 
+            }
+            else
+            {
+                return new TicketSoldEvent { TicketNumber = command.Ticket.TicketNumber };
+            }
         }
 
         private void VerifyIputArguments(SellTicketCommand command)

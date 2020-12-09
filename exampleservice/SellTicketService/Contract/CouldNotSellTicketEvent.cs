@@ -2,7 +2,7 @@
 
 namespace exampleservice.SellTicketService.Contract
 {
-    public class TicketSoldEvent : EventBase
+    public class CouldNotSellTicketEvent : EventBase
     {
         public string TicketNumber { get; set; }
     }
