@@ -7,6 +7,7 @@ namespace exampleservice.SellTicketService
         public bool WasCompensated { get; set; }
 
         public SellTicketCommand Command { get; set; }
-        public bool HasWithdrawn { get; internal set; }
+        public bool HasDeposit { get; internal set; }
+        public bool HasWithdrawn { get; set; }
     }
 }

@@ -22,7 +22,7 @@ namespace exampleservice.SellTicketService.Steps
             }
             else
             {
-                contextType.HasWithdrawn = true;
+                contextType.HasDeposit = true;
                 return false;
             }
         }
