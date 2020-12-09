@@ -6,9 +6,9 @@ namespace simplescript.DSL
 {
     public class ProcedureDescription<TContext>
     {
-        private List<ProcedureStepBase<TContext>> steps = new List<ProcedureStepBase<TContext>>();
-        private Dictionary<Type, Func<object>> services = new Dictionary<Type, Func<object>>();
-
+        private ProcedureStepBase<TContext> initStep;
+        private ProcedureStepBase<TContext> lastAddedStep;
+  
         public static ProcedureDescription<TContext> Start()
         {
             return new ProcedureDescription<TContext>();
@@ -16,25 +16,26 @@ namespace simplescript.DSL
 
         public ProcedureDescription<TContext> Then(ProcedureStepBase<TContext> step)
         {
-            this.steps.Add(step);
+            if (this.initStep == null)
+            {
+                this.initStep = step;
+            }
+            if (this.lastAddedStep != null)
+            {
+                this.lastAddedStep.SetSuccessor(step);
+            }
+            this.lastAddedStep = step;
             return this;
         }
 
         public ProcedureDescription<TContext> UseService<TService>(Func<TService> factory) where TService : class
         {
-            services.Add(typeof(TService), factory);
-            return this;
+            throw new NotSupportedException("IOC capabilities will be implemented by upcoming relase.");
         }
 
         public Procedure<TContext> Finish()
         {
-            steps.ForEach(step => this.InjectDependencies(step));
-            return new Procedure<TContext>(steps[0]);
-        }
-
-        private void InjectDependencies(ProcedureStepBase<TContext> step)
-        {
-            throw new NotImplementedException();
+            return new Procedure<TContext>(this.initStep);
         }
     }
 }
