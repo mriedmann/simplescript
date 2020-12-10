@@ -9,5 +9,6 @@ namespace exampleservice.SellTicketService
         public SellTicketCommand Command { get; set; }
         public bool HasDeposit { get; internal set; }
         public bool HasWithdrawn { get; set; }
+        public bool TicketWasSold { get; set; }
     }
 }
