@@ -2,7 +2,7 @@ using System;
 
 namespace exampleservice.CustomerService.Contract
 {
-    public class CheckSessionCommand : CustomerServiceCommand
+    public class CheckSessionCommand
     {
         public Guid SessionId { get; set; }
     }
