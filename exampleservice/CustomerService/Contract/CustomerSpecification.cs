@@ -5,6 +5,7 @@ namespace exampleservice.CustomerService.Contract
     public class CustomerSpecification : ICloneable
     {
         public Guid CustomerId { get; set; }
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }

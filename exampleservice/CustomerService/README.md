@@ -42,3 +42,11 @@ We are currently using the same objects for communication (inside events) and fo
 ### Test-Coverage
 
 With ~60% Branch coverage we are far from perfect. We could try to do some refactoring to reduce branches. Adding more tests could also be valid, but we should not overextend the specification. There are no specific requirements on error-handling. Maybe we can just remove some checks or ask for more information on how to handle edge-cases.
+
+### Error Handling
+
+How to handle error-states? Using different event-objects or use the error-code in EventBase. Should we handle DB-errors?
+
+### Should we use AccountService in CreateAccount-Method
+
+

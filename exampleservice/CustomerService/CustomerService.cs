@@ -35,7 +35,7 @@ namespace exampleservice.CustomerService
             }
             if (session.ValidNotAfter > DateTime.Now)
             {
-                session.ValidNotAfter = DateTime.Now.Add(new TimeSpan(0, 30, 0));
+                session.ValidNotAfter = DateTime.Now.AddMinutes(30);
                 if (await dataBaseRepository.SaveSession(session) > 0)
                 {
                     return new SessionChangedEvent() { Session = session };
@@ -64,7 +64,7 @@ namespace exampleservice.CustomerService
                 {
                     SessionId = Guid.NewGuid(),
                     CreatedAt = DateTime.Now,
-                    ValidNotAfter = DateTime.Now.Add(new TimeSpan(0, 30, 0)) //TODO: remove magic number
+                    ValidNotAfter = DateTime.Now.AddMinutes(30) //TODO: remove magic number
                 };
                 if (await dataBaseRepository.SaveSession(session) > 0)
                 {
@@ -93,6 +93,7 @@ namespace exampleservice.CustomerService
             //TODO: maybe using the same object for DB and Event is not the best idea. Just copied the pattern from SellTicketService.
             command.Customer.PasswordHash = passwordHash;
             command.Customer.CustomerId = Guid.NewGuid();
+            //TODO: maybe rename to CreateCustomer to avoid missunderstanding (e.g. save = update != create)
             if (await dataBaseRepository.SaveCustomer(command.Customer) > 0)
             {
                 return new CustomerRegisteredEvent() { Customer = command.Customer };
