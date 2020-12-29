@@ -167,3 +167,4 @@ $RECYCLE.BIN/
 
 # VSCode Files
 /.vscode/
+lcov.info
