@@ -4,6 +4,6 @@ namespace exampleservice.CustomerService.Contract
 {
     public class SessionChangedEvent : EventBase
     {
-        public SessionSpecification Session {get;set;}
+        public SessionSpecification Session { get; set; }
     }
 }

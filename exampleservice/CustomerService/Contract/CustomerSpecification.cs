@@ -4,7 +4,7 @@ namespace exampleservice.CustomerService.Contract
 {
     public class CustomerSpecification : ICloneable
     {
-        public Guid CustomerId {get;set;}
+        public Guid CustomerId { get; set; }
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -17,9 +17,9 @@ namespace exampleservice.CustomerService.Contract
 
         ///<remark>deliberately NOT using SecureString here (also not available on .NET Core)</remark>
         ///<see>https://github.com/dotnet/platform-compat/blob/master/docs/DE0001.md</see>
-        public string Password {get;set;} 
+        public string Password { get; set; }
 
-        public string PasswordHash {get;set;}
+        public string PasswordHash { get; set; }
 
         public object Clone()
         {

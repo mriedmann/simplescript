@@ -19,9 +19,10 @@ namespace exampleservice.tests.CustomerService
         private const string testCustomerPassword = "password1234";
         private CustomerSpecification testCustomerSpec;
         private CustomerSpecification registerCustomerSpec;
-        
+
         [SetUp]
-        public void Setup(){
+        public void Setup()
+        {
             testCustomerSpec = new CustomerSpecification()
             {
                 CustomerId = Guid.NewGuid(),
@@ -195,10 +196,11 @@ namespace exampleservice.tests.CustomerService
         public async Task CheckSessionSucceed()
         {
             var testSessionId = Guid.NewGuid();
-            var testSession = new SessionSpecification(){
+            var testSession = new SessionSpecification()
+            {
                 SessionId = testSessionId,
-                CreatedAt = DateTime.Now.Subtract(new TimeSpan(0,5,0)),
-                ValidNotAfter = DateTime.Now.Add(new TimeSpan(0,25,0))
+                CreatedAt = DateTime.Now.Subtract(new TimeSpan(0, 5, 0)),
+                ValidNotAfter = DateTime.Now.Add(new TimeSpan(0, 25, 0))
             };
 
             var busMock = new Moq.Mock<IMessageBus>();
@@ -231,10 +233,11 @@ namespace exampleservice.tests.CustomerService
         public async Task CheckSessionFailed_SessionTimeout()
         {
             var testSessionId = Guid.NewGuid();
-            var testSession = new SessionSpecification(){
+            var testSession = new SessionSpecification()
+            {
                 SessionId = testSessionId,
-                CreatedAt = DateTime.Now.Subtract(new TimeSpan(0,35,0)),
-                ValidNotAfter = DateTime.Now.Subtract(new TimeSpan(0,5,0))
+                CreatedAt = DateTime.Now.Subtract(new TimeSpan(0, 35, 0)),
+                ValidNotAfter = DateTime.Now.Subtract(new TimeSpan(0, 5, 0))
             };
 
             var busMock = new Moq.Mock<IMessageBus>();

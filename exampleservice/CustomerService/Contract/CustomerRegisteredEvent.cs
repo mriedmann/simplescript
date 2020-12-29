@@ -4,6 +4,6 @@ namespace exampleservice.CustomerService.Contract
 {
     public class CustomerRegisteredEvent : EventBase
     {
-        public CustomerSpecification Customer {get;set;}
+        public CustomerSpecification Customer { get; set; }
     }
 }

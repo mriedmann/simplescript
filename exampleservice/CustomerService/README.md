@@ -9,13 +9,13 @@ Following processes/commands should be implemented.
 ### 1. Registration
 
 > Mit diesem Command kann man einen Kunden registrieren. Dieser besteht aus den folgenden Daten:
-a. Vorname
-b. Nachname
-c. Geburtsdatum
-d. Handynummer
-e. Benutzername
-f. Passwort
-Im Zuge der Registrierung wird ihm eine ID zugewiesen.
+> a. Vorname
+> b. Nachname
+> c. Geburtsdatum
+> d. Handynummer
+> e. Benutzername
+> f. Passwort
+> Im Zuge der Registrierung wird ihm eine ID zugewiesen.
 
 ### 2. Login
 

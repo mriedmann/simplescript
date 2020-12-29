@@ -5,6 +5,6 @@ namespace exampleservice.CustomerService.Contract
 {
     public class SessionTimeoutEvent : EventBase
     {
-        public Guid SessionId {get;set;}
+        public Guid SessionId { get; set; }
     }
 }
