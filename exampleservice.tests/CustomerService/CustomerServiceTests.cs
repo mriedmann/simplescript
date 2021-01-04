@@ -32,7 +32,7 @@ namespace exampleservice.tests.CustomerService
                 Phonenumber = "+123456789",
                 DayOfBirth = new DateTime(1999, 9, 9),
                 Password = null,
-                PasswordHash = exampleservice.CustomerService.CustomerService.ComputePasswordHash(testCustomerPassword)
+                PasswordHash = exampleservice.CustomerService.Utils.Password.ComputeHash(testCustomerPassword)
             };
 
             registerCustomerSpec = new CustomerSpecification()
@@ -160,7 +160,7 @@ namespace exampleservice.tests.CustomerService
                 specificResultedEvent.Customer.LastName.Should().Be(registerCustomerSpec.LastName);
                 specificResultedEvent.Customer.Phonenumber.Should().Be(registerCustomerSpec.Phonenumber);
                 specificResultedEvent.Customer.Password.Should().BeNull();
-                specificResultedEvent.Customer.PasswordHash.Should().Be(exampleservice.CustomerService.CustomerService.ComputePasswordHash(registerCustomerSpec.Password));
+                specificResultedEvent.Customer.PasswordHash.Should().Be(exampleservice.CustomerService.Utils.Password.ComputeHash(registerCustomerSpec.Password));
                 specificResultedEvent.Customer.CustomerId.Should().NotBeEmpty();
             }
         }

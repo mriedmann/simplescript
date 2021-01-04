@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="CustomerService\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\simplescript\simplescript.csproj" />
   </ItemGroup>
 

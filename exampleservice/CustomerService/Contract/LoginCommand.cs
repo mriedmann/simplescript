@@ -1,6 +1,6 @@
 namespace exampleservice.CustomerService.Contract
 {
-    public class LoginCommand
+    public class LoginCommand : CustomerCommandBase
     {
         public string Username { get; set; }
 
