@@ -6,7 +6,7 @@ namespace exampleservice.CustomerService.Controller
 {
     public interface ICustomerServiceDataBaseRepository
     {
-        Task<int> SaveCustomer(CustomerSpecification ticket);
+        Task<int> CreateCustomer(CustomerSpecification ticket);
 
         Task<CustomerSpecification> LoadCustomer(string username);
 

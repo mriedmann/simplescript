@@ -1,11 +1,10 @@
 ﻿using exampleservice.CustomerService.Contract;
 using exampleservice.CustomerService.Controller;
+using exampleservice.CustomerService.Events;
 using exampleservice.CustomerService.Utils;
 using exampleservice.Framework.Abstract;
 using exampleservice.Framework.BaseFramework;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace exampleservice.CustomerService.Handler
@@ -30,22 +29,16 @@ namespace exampleservice.CustomerService.Handler
             {
                 return new LoginFailedEvent() { Username = command.Username };
             }
+
             string givenPasswordHash = Password.ComputeHash(command.Password);
             if (givenPasswordHash.Equals(customer.PasswordHash))
             {
-                //TODO: refactor to factory
-                Guid sessionId = Guid.NewGuid();
-                SessionSpecification session = new SessionSpecification()
-                {
-                    SessionId = Guid.NewGuid(),
-                    CreatedAt = DateTime.Now,
-                    ValidNotAfter = DateTime.Now.AddMinutes(30) //TODO: remove magic number
-                };
+                SessionSpecification session = SessionSpecification.NewSession();
+
                 if (await dataBaseRepository.SaveSession(session) > 0)
-                {
                     return new LoginSucceededEvent() { Username = command.Username, Session = session };
-                }
-                //TODO: handle error - db save failed
+                else
+                    return new GenericErrorEvent();
             }
             //invalid password or some other error occured
             return new LoginFailedEvent() { Username = command.Username };

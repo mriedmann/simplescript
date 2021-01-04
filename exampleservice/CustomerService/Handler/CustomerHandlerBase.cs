@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace exampleservice.CustomerService.Contract
+namespace exampleservice.CustomerService.Handler
 {
     internal abstract class CustomerHandlerBase<T> where T : CustomerCommandBase
     {

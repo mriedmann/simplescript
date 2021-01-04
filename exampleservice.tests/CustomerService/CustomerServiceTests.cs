@@ -1,8 +1,7 @@
-using exampleservice.AccoutingService.Contract;
-using exampleservice.Framework.Abstract;
 using exampleservice.CustomerService.Contract;
 using exampleservice.CustomerService.Controller;
-using exampleservice.TicketService.Contracts;
+using exampleservice.CustomerService.Events;
+using exampleservice.Framework.Abstract;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Moq;
@@ -72,7 +71,7 @@ namespace exampleservice.tests.CustomerService
                 var specificResultedEvent = (LoginSucceededEvent)resultedEvent;
                 specificResultedEvent.Username.Should().Be(testCustomerSpec.Username);
                 specificResultedEvent.Session.SessionId.Should().NotBe(Guid.Empty);
-                specificResultedEvent.Session.ValidNotAfter.Should().BeAfter(DateTime.Now.Add(new TimeSpan(0, 25, 0))); //TODO: flacky test, should not rely on timing
+                specificResultedEvent.Session.ValidNotAfter.Should().BeAfter(DateTime.Now.AddMinutes(25));
             }
         }
 
@@ -140,7 +139,7 @@ namespace exampleservice.tests.CustomerService
             var dataBaseMock = new Moq.Mock<ICustomerServiceDataBaseRepository>();
             dataBaseMock.Setup(d => d.LoadCustomer(It.IsAny<string>())).
                 ReturnsAsync(default(CustomerSpecification));
-            dataBaseMock.Setup(d => d.SaveCustomer(It.IsAny<CustomerSpecification>())).
+            dataBaseMock.Setup(d => d.CreateCustomer(It.IsAny<CustomerSpecification>())).
                 ReturnsAsync(1);
 
             var instanceUnderTest = new exampleservice.CustomerService.CustomerService(busMock.Object, dataBaseMock.Object);
@@ -199,8 +198,8 @@ namespace exampleservice.tests.CustomerService
             var testSession = new SessionSpecification()
             {
                 SessionId = testSessionId,
-                CreatedAt = DateTime.Now.Subtract(new TimeSpan(0, 5, 0)),
-                ValidNotAfter = DateTime.Now.Add(new TimeSpan(0, 25, 0))
+                CreatedAt = DateTime.Now.AddMinutes(5),
+                ValidNotAfter = DateTime.Now.AddMinutes(25)
             };
 
             var busMock = new Moq.Mock<IMessageBus>();
@@ -225,7 +224,7 @@ namespace exampleservice.tests.CustomerService
                 var specificResultedEvent = (SessionChangedEvent)resultedEvent;
                 specificResultedEvent.Session.SessionId.Should().Be(testSession.SessionId);
                 specificResultedEvent.Session.CreatedAt.Should().Be(testSession.CreatedAt);
-                specificResultedEvent.Session.ValidNotAfter.Should().BeAfter(testSession.ValidNotAfter); //TODO: better way to check renewal?
+                specificResultedEvent.Session.ValidNotAfter.Should().BeAfter(testSession.ValidNotAfter);
             }
         }
 
@@ -236,8 +235,8 @@ namespace exampleservice.tests.CustomerService
             var testSession = new SessionSpecification()
             {
                 SessionId = testSessionId,
-                CreatedAt = DateTime.Now.Subtract(new TimeSpan(0, 35, 0)),
-                ValidNotAfter = DateTime.Now.Subtract(new TimeSpan(0, 5, 0))
+                CreatedAt = DateTime.Now.AddMinutes(-35),
+                ValidNotAfter = DateTime.Now.AddMinutes(-5)
             };
 
             var busMock = new Moq.Mock<IMessageBus>();
@@ -258,8 +257,8 @@ namespace exampleservice.tests.CustomerService
 
             using (new AssertionScope())
             {
-                resultedEvent.Should().BeOfType(typeof(SessionTimeoutEvent));
-                var specificResultedEvent = (SessionTimeoutEvent)resultedEvent;
+                resultedEvent.Should().BeOfType(typeof(InvalidSessionEvent));
+                var specificResultedEvent = (InvalidSessionEvent)resultedEvent;
                 specificResultedEvent.SessionId.Should().Be(testSession.SessionId);
             }
         }

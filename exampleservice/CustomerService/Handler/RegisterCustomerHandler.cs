@@ -1,11 +1,10 @@
 ﻿using exampleservice.CustomerService.Contract;
 using exampleservice.CustomerService.Controller;
+using exampleservice.CustomerService.Events;
 using exampleservice.CustomerService.Utils;
 using exampleservice.Framework.Abstract;
 using exampleservice.Framework.BaseFramework;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace exampleservice.CustomerService.Handler
@@ -34,15 +33,21 @@ namespace exampleservice.CustomerService.Handler
             {
                 return new CustomerRegistrationFailedEvent() { Customer = command.Customer };
             }
-            //TODO: maybe using the same object for DB and Event is not the best idea. Just copied the pattern from SellTicketService.
+            
             command.Customer.PasswordHash = passwordHash;
             command.Customer.CustomerId = Guid.NewGuid();
-            //TODO: maybe rename to CreateCustomer to avoid missunderstanding (e.g. save = update != create)
-            if (await dataBaseRepository.SaveCustomer(command.Customer) > 0)
+            
+            if (await dataBaseRepository.CreateCustomer(command.Customer) > 0)
             {
-                return new CustomerRegisteredEvent() { Customer = command.Customer };
+                CustomerRegisteredEvent e = new CustomerRegisteredEvent() { Customer = command.Customer };
+                bus.PublishEvent(e);
+                return e;
             }
-            //TODO: handle error - db save failed
+            else
+            {
+                return new GenericErrorEvent();
+            }
+
             command.Customer.PasswordHash = null; //set hash to null to be save
             return new CustomerRegistrationFailedEvent() { Customer = command.Customer };
         }
