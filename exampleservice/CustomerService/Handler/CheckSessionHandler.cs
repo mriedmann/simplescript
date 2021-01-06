@@ -10,13 +10,9 @@ namespace exampleservice.CustomerService.Handler
 {
     internal class CheckSessionHandler : CustomerHandlerBase<CheckSessionCommand>
     {
-        private IMessageBus bus;
-        private ICustomerServiceDataBaseRepository dataBaseRepository;
 
-        public CheckSessionHandler(IMessageBus bus, ICustomerServiceDataBaseRepository dataBaseRepository)
+        public CheckSessionHandler(IMessageBus bus, ICustomerServiceDataBaseRepository dataBaseRepository) : base(bus, dataBaseRepository)
         {
-            this.bus = bus ?? throw new ArgumentNullException(nameof(bus));
-            this.dataBaseRepository = dataBaseRepository ?? throw new ArgumentNullException(nameof(dataBaseRepository));
         }
 
         internal override async Task<EventBase> Handle(CheckSessionCommand command)

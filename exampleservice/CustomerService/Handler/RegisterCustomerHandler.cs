@@ -1,4 +1,4 @@
-using exampleservice.CustomerService.Contract;
+﻿using exampleservice.CustomerService.Contract;
 using exampleservice.CustomerService.Controller;
 using exampleservice.CustomerService.Events;
 using exampleservice.CustomerService.Utils;
@@ -11,13 +11,9 @@ namespace exampleservice.CustomerService.Handler
 {
     internal class RegisterCustomerHandler : CustomerHandlerBase<RegisterCustomerCommand>
     {
-        private IMessageBus bus;
-        private ICustomerServiceDataBaseRepository dataBaseRepository;
 
-        public RegisterCustomerHandler(IMessageBus bus, ICustomerServiceDataBaseRepository dataBaseRepository)
+        public RegisterCustomerHandler(IMessageBus bus, ICustomerServiceDataBaseRepository dataBaseRepository) : base(bus, dataBaseRepository)
         {
-            this.bus = bus ?? throw new ArgumentNullException(nameof(bus));
-            this.dataBaseRepository = dataBaseRepository ?? throw new ArgumentNullException(nameof(dataBaseRepository));
         }
 
         internal override async Task<EventBase> Handle(RegisterCustomerCommand command)

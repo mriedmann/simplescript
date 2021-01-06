@@ -11,13 +11,8 @@ namespace exampleservice.CustomerService.Handler
 {
     internal class LoginHandler : CustomerHandlerBase<LoginCommand>
     {
-        private IMessageBus bus;
-        private ICustomerServiceDataBaseRepository dataBaseRepository;
-
-        public LoginHandler(IMessageBus bus, ICustomerServiceDataBaseRepository dataBaseRepository)
+        public LoginHandler(IMessageBus bus, ICustomerServiceDataBaseRepository dataBaseRepository) : base(bus, dataBaseRepository)
         {
-            this.bus = bus ?? throw new ArgumentNullException(nameof(bus));
-            this.dataBaseRepository = dataBaseRepository ?? throw new ArgumentNullException(nameof(dataBaseRepository));
         }
 
         internal override async Task<EventBase> Handle(LoginCommand command)
