@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace exampleservice.CustomerService.Handler
 {
-    internal abstract class CustomerHandlerBase<T> where T : CustomerCommandBase
+    internal abstract class CustomerHandlerBase<T>
     {
         protected IMessageBus bus;
         protected ICustomerServiceDataBaseRepository dataBaseRepository;

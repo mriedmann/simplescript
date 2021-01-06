@@ -10,6 +10,8 @@ using System.Security.Cryptography;
 using System.Text;
 using exampleservice.CustomerService.Handler;
 using exampleservice.CustomerService.Utils;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace exampleservice.CustomerService
 {
@@ -24,25 +26,16 @@ namespace exampleservice.CustomerService
             this.dataBaseRepository = dataBaseRepository ?? throw new ArgumentNullException(nameof(dataBaseRepository));
         }
 
-        public async Task<EventBase> Handle(CustomerCommandBase command)
-        {
-            if (command is RegisterCustomerCommand)
-            {
-                return await new RegisterCustomerHandler(this.bus, this.dataBaseRepository)
-                    .Handle(command as RegisterCustomerCommand);
-            }
-            else if (command is LoginCommand)
-            {
-                return await new LoginHandler(this.bus, this.dataBaseRepository)
-                    .Handle(command as LoginCommand);
-            }
-            else if (command is CheckSessionCommand)
-            {
-                return await new CheckSessionHandler(this.bus, this.dataBaseRepository)
-                    .Handle(command as CheckSessionCommand);
-            }
+        public async Task<EventBase> Handle(RegisterCustomerCommand command){
+            return await new RegisterCustomerHandler(this.bus, this.dataBaseRepository).Handle(command);
+        }
 
-            throw new NotSupportedException();
+        public async Task<EventBase> Handle(LoginCommand command){
+            return await new LoginHandler(this.bus, this.dataBaseRepository).Handle(command);
+        }
+
+        public async Task<EventBase> Handle(CheckSessionCommand command){
+            return await new CheckSessionHandler(this.bus, this.dataBaseRepository).Handle(command);
         }
     }
 }
