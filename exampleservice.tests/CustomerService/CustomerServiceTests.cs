@@ -4,6 +4,7 @@ using exampleservice.CustomerService.Events;
 using exampleservice.Framework.Abstract;
 using FluentAssertions;
 using FluentAssertions.Execution;
+using FluentAssertions.Extensions;
 using Moq;
 using NUnit.Framework;
 using System;
@@ -198,7 +199,7 @@ namespace exampleservice.tests.CustomerService
             var testSession = new SessionSpecification()
             {
                 SessionId = testSessionId,
-                CreatedAt = DateTime.Now.AddMinutes(5),
+                CreatedAt = DateTime.Now.AddMinutes(-5),
                 ValidNotAfter = DateTime.Now.AddMinutes(25)
             };
 
@@ -225,6 +226,8 @@ namespace exampleservice.tests.CustomerService
                 specificResultedEvent.Session.SessionId.Should().Be(testSession.SessionId);
                 specificResultedEvent.Session.CreatedAt.Should().Be(testSession.CreatedAt);
                 specificResultedEvent.Session.ValidNotAfter.Should().BeAfter(testSession.ValidNotAfter);
+                // check on relative times to avoid problems with actual times. 5min old session + 30min = 35min overall lifetime
+                (specificResultedEvent.Session.ValidNotAfter - specificResultedEvent.Session.CreatedAt).Should().BeCloseTo(new TimeSpan(0,35,0), 1.Minutes());
             }
         }
 
