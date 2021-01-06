@@ -1,4 +1,4 @@
-﻿using exampleservice.CustomerService.Contract;
+using exampleservice.CustomerService.Contract;
 using exampleservice.CustomerService.Controller;
 using exampleservice.CustomerService.Events;
 using exampleservice.CustomerService.Utils;
@@ -40,16 +40,12 @@ namespace exampleservice.CustomerService.Handler
             if (await dataBaseRepository.CreateCustomer(command.Customer) > 0)
             {
                 CustomerRegisteredEvent e = new CustomerRegisteredEvent() { Customer = command.Customer };
-                bus.PublishEvent(e);
+                await bus.PublishEvent(e);
                 return e;
-            }
-            else
-            {
-                return new GenericErrorEvent();
             }
 
             command.Customer.PasswordHash = null; //set hash to null to be save
-            return new CustomerRegistrationFailedEvent() { Customer = command.Customer };
+            return new GenericErrorEvent();
         }
 
         protected override void VerifyIputArguments(RegisterCustomerCommand command)
