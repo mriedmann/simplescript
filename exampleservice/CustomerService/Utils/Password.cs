@@ -5,7 +5,7 @@ using System.Text;
 
 namespace exampleservice.CustomerService.Utils
 {
-    public class Password
+    public static class Password
     {
         public static string ComputeHash(string password)
         {

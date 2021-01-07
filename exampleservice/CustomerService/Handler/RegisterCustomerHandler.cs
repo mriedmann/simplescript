@@ -1,46 +1,35 @@
 ﻿using exampleservice.CustomerService.Contract;
 using exampleservice.CustomerService.Controller;
+using exampleservice.CustomerService.Steps;
 using exampleservice.CustomerService.Utils;
 using exampleservice.Framework.Abstract;
 using exampleservice.Framework.BaseFramework;
+using simplescript;
+using simplescript.DSL;
 using System;
 using System.Threading.Tasks;
 
 namespace exampleservice.CustomerService.Handler
 {
-    internal class RegisterCustomerHandler : CustomerHandlerBase<RegisterCustomerCommand>
+    internal class RegisterCustomerHandler : CustomerHandlerBase<RegisterCustomerCommand, CustomerContext>
     {
-
         public RegisterCustomerHandler(IMessageBus bus, ICustomerServiceDataBaseRepository dataBaseRepository) : base(bus, dataBaseRepository)
         {
         }
 
-        internal override async Task<EventBase> Handle(RegisterCustomerCommand command)
+        internal async override Task<EventBase> Handle(RegisterCustomerCommand command)
         {
             this.VerifyIputArguments(command);
 
-            string passwordHash = Password.ComputeHash(command.Customer.Password);
-            command.Customer.Password = null; //set PW to null asap to avoid saving or returning cleartext password at all cost
+            var context = new CustomerContext(){ Command = command }; 
+            await procedure.Value.Execute(context);
 
-            //check if customer username is already taken
-            CustomerSpecification customer = await dataBaseRepository.LoadCustomer(command.Customer.Username);
-            if (customer != null)
-            {
+            context.Command.Customer.Password = null;
+
+            if (context.WasCompensated)
                 return new CustomerRegistrationFailedEvent() { Customer = command.Customer };
-            }
-            
-            command.Customer.PasswordHash = passwordHash;
-            command.Customer.CustomerId = Guid.NewGuid();
-            
-            if (await dataBaseRepository.CreateCustomer(command.Customer) > 0)
-            {
-                CustomerRegisteredEvent e = new CustomerRegisteredEvent() { Customer = command.Customer };
-                await bus.PublishEvent(e);
-                return e;
-            }
-
-            command.Customer.PasswordHash = null; //set hash to null to be save
-            return new GenericErrorEvent();
+                 
+            return new CustomerRegisteredEvent() { Customer = context.Customer };;
         }
 
         protected override void VerifyIputArguments(RegisterCustomerCommand command)
@@ -64,6 +53,15 @@ namespace exampleservice.CustomerService.Handler
             {
                 throw new NotSupportedException();
             }
+        }
+
+        protected override Procedure<CustomerContext> GetProcedure()
+        {
+            return ProcedureDescription<CustomerContext>.
+               Start().
+               Then(new CreateCustomer(dataBaseRepository)).
+               Then(new PublishNewCustomerEvent(bus)).
+               Finish();
         }
     }
 }

@@ -4,7 +4,7 @@ namespace exampleservice.CustomerService.Contract
 {
     public class SessionSpecification : ICloneable
     {
-        const int DEFAULT_SESSIONTIME = 30;
+        public const int DEFAULT_SESSIONTIME = 30;
 
         public Guid SessionId { get; set; }
 

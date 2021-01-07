@@ -1,41 +1,32 @@
 ﻿using exampleservice.CustomerService.Contract;
 using exampleservice.CustomerService.Controller;
-using exampleservice.CustomerService.Utils;
+using exampleservice.CustomerService.Steps;
 using exampleservice.Framework.Abstract;
 using exampleservice.Framework.BaseFramework;
+using simplescript;
+using simplescript.DSL;
 using System;
 using System.Threading.Tasks;
 
 namespace exampleservice.CustomerService.Handler
 {
-    internal class LoginHandler : CustomerHandlerBase<LoginCommand>
+    internal class LoginHandler : CustomerHandlerBase<LoginCommand, SessionContext>
     {
         public LoginHandler(IMessageBus bus, ICustomerServiceDataBaseRepository dataBaseRepository) : base(bus, dataBaseRepository)
         {
         }
 
-        internal override async Task<EventBase> Handle(LoginCommand command)
+        internal async override Task<EventBase> Handle(LoginCommand command)
         {
             this.VerifyIputArguments(command);
 
-            CustomerSpecification customer = await dataBaseRepository.LoadCustomer(command.Username);
-            if (customer == null)
-            {
+            var context = new SessionContext(){ Command = command }; 
+            await procedure.Value.Execute(context);
+
+            if (context.WasCompensated || !context.PasswordValid)
                 return new LoginFailedEvent() { Username = command.Username };
-            }
 
-            string givenPasswordHash = Password.ComputeHash(command.Password);
-            if (givenPasswordHash.Equals(customer.PasswordHash))
-            {
-                SessionSpecification session = SessionSpecification.NewSession();
-
-                if (await dataBaseRepository.SaveSession(session) > 0)
-                    return new LoginSucceededEvent() { Username = command.Username, Session = session };
-                else
-                    return new GenericErrorEvent();
-            }
-            //invalid password or some other error occured
-            return new LoginFailedEvent() { Username = command.Username };
+            return new LoginSucceededEvent() { Username = command.Username, Session = context.Session };
         }
 
         protected override void VerifyIputArguments(LoginCommand command)
@@ -47,6 +38,16 @@ namespace exampleservice.CustomerService.Handler
             {
                 throw new ArgumentNullException();
             }
+        }
+
+        protected override Procedure<SessionContext> GetProcedure()
+        {
+            return ProcedureDescription<SessionContext>.
+               Start().
+               Then(new CheckCredentials(dataBaseRepository)).
+               Then(new NewSession(dataBaseRepository)).
+               Then(new SaveSession(dataBaseRepository)).
+               Finish();
         }
     }
 }

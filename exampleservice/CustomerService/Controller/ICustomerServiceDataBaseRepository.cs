@@ -10,8 +10,12 @@ namespace exampleservice.CustomerService.Controller
 
         Task<CustomerSpecification> LoadCustomer(string username);
 
+        Task<int> DeleteCustomer(Guid customerId);
+
         Task<int> SaveSession(SessionSpecification session);
 
         Task<SessionSpecification> LoadSession(Guid sessionId);
+
+        Task<int> DeleteSession(Guid sessionId);
     }
 }
