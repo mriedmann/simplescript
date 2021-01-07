@@ -45,7 +45,7 @@ namespace exampleservice.tests.SellTicketService.Steps
             var context = new SellTicketContext { Command = new SellTicketCommand { Ticket = new TicketSpecification { Price = price }, SellerAccountId = sellerAccountId } };
             await instanceUnderTest.Execute(context);
 
-            using(new AssertionScope())
+            using (new AssertionScope())
             {
                 context.HasDeposit.Should().BeFalse();
                 context.WasCompensated.Should().BeTrue();
@@ -62,7 +62,7 @@ namespace exampleservice.tests.SellTicketService.Steps
             messageBusMock.Setup(s => s.RequestAndReply<WithdrawFromCustomerCommand>(It.Is<WithdrawFromCustomerCommand>(c => c.Amount == price && c.AccountId == sellerAccountId))).
                ReturnsAsync(new WithdrawnFromCustomerEvent());
             var instanceUnderTest = new exampleservice.SellTicketService.Steps.DepositToSellerAccount(messageBusMock.Object);
-            var context = new SellTicketContext { Command =  new SellTicketCommand { Ticket = new TicketSpecification {  Price = price }, SellerAccountId = sellerAccountId } };
+            var context = new SellTicketContext { Command = new SellTicketCommand { Ticket = new TicketSpecification { Price = price }, SellerAccountId = sellerAccountId } };
             await instanceUnderTest.Compensate(context);
 
             messageBusMock.Verify(s => s.RequestAndReply<WithdrawFromCustomerCommand>(It.Is<WithdrawFromCustomerCommand>(c => c.Amount == price && c.AccountId == sellerAccountId)));

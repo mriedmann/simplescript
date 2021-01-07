@@ -20,7 +20,7 @@ namespace exampleservice.CustomerService.Handler
         {
             this.VerifyIputArguments(command);
 
-            var context = new SessionContext(){ Command = command }; 
+            var context = new SessionContext() { Command = command };
             await procedure.Value.Execute(context);
 
             if (context.WasCompensated || !context.PasswordValid)

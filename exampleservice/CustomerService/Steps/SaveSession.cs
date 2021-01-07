@@ -1,5 +1,4 @@
 ﻿using exampleservice.CustomerService.Controller;
-using exampleservice.SellTicketService.Controller;
 using simplescript.Abstract;
 using System;
 using System.Threading.Tasks;

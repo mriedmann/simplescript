@@ -1,7 +1,6 @@
 ﻿using exampleservice.CustomerService.Contract;
 using exampleservice.CustomerService.Controller;
 using exampleservice.CustomerService.Steps;
-using exampleservice.CustomerService.Utils;
 using exampleservice.Framework.Abstract;
 using exampleservice.Framework.BaseFramework;
 using simplescript;
@@ -21,15 +20,15 @@ namespace exampleservice.CustomerService.Handler
         {
             this.VerifyIputArguments(command);
 
-            var context = new CustomerContext(){ Command = command }; 
+            var context = new CustomerContext() { Command = command };
             await procedure.Value.Execute(context);
 
             context.Command.Customer.Password = null;
 
             if (context.WasCompensated)
                 return new CustomerRegistrationFailedEvent() { Customer = command.Customer };
-                 
-            return new CustomerRegisteredEvent() { Customer = context.Customer };;
+
+            return new CustomerRegisteredEvent() { Customer = context.Customer }; ;
         }
 
         protected override void VerifyIputArguments(RegisterCustomerCommand command)

@@ -42,7 +42,7 @@ namespace exampleservice.tests.SellTicketService
 
             var resultedEvent = await instanceUnderTest.Handle(sellTicketCommand);
 
-            using(new AssertionScope())
+            using (new AssertionScope())
             {
                 resultedEvent.Should().BeOfType(typeof(TicketSoldEvent));
                 var ticketSoldEvent = (TicketSoldEvent)resultedEvent;

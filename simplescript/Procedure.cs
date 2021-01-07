@@ -10,7 +10,7 @@ namespace simplescript
 
         public Procedure(ProcedureStepBase<TContextType> initialStep)
         {
-            this.initialStep = initialStep ?? throw new ArgumentNullException(nameof(initialStep));             
+            this.initialStep = initialStep ?? throw new ArgumentNullException(nameof(initialStep));
         }
 
         public async Task Execute(TContextType context)

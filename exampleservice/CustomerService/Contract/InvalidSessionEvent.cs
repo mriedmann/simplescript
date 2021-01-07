@@ -1,5 +1,5 @@
-using System;
 using exampleservice.Framework.BaseFramework;
+using System;
 
 namespace exampleservice.CustomerService.Contract
 {

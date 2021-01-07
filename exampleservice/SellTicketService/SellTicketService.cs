@@ -30,7 +30,7 @@ namespace exampleservice.SellTicketService
             await procedure.Value.Execute(context);
             if (context.WasCompensated)
             {
-                return new CouldNotSellTicketEvent { TicketNumber = command.Ticket.TicketNumber }; 
+                return new CouldNotSellTicketEvent { TicketNumber = command.Ticket.TicketNumber };
             }
             else
             {
@@ -40,7 +40,7 @@ namespace exampleservice.SellTicketService
 
         private void VerifyIputArguments(SellTicketCommand command)
         {
-            if(command == null)
+            if (command == null)
             {
                 throw new ArgumentNullException();
             }

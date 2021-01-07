@@ -3,7 +3,6 @@ using exampleservice.CustomerService.Controller;
 using exampleservice.Framework.Abstract;
 using FluentAssertions;
 using FluentAssertions.Execution;
-using FluentAssertions.Extensions;
 using Moq;
 using NUnit.Framework;
 using System;

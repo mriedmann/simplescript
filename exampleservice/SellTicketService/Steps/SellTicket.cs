@@ -14,7 +14,7 @@ namespace exampleservice.SellTicketService.Steps
         protected async override Task<bool> StepSpecificExecute(SellTicketContext contextType)
         {
             var reply = await this.bus.RequestAndReply(new FlagTicketAsSoldCommand { TicketNumber = contextType.Command.Ticket.TicketNumber });
-            if(reply is CouldNotFlagTicketAsSoldEvent)
+            if (reply is CouldNotFlagTicketAsSoldEvent)
             {
                 await this.CompensatePredecssorOnly(contextType);
                 contextType.WasCompensated = true;

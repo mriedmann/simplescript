@@ -1,6 +1,7 @@
 namespace exampleservice.CustomerService.Contract
 {
-    public abstract class SessionCommandBase {
-        
+    public abstract class SessionCommandBase
+    {
+
     }
 }

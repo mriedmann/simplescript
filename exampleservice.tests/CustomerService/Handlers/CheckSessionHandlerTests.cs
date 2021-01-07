@@ -30,7 +30,7 @@ namespace exampleservice.tests.CustomerService.Handlers
                 ValidNotAfter = now.AddMinutes(25)
             };
         }
-        
+
         [Test]
         public async Task CheckSessionSucceed()
         {

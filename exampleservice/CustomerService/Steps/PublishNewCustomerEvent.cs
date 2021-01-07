@@ -1,5 +1,4 @@
 using exampleservice.CustomerService.Contract;
-using exampleservice.CustomerService.Controller;
 using exampleservice.Framework.Abstract;
 using simplescript.Abstract;
 using System;

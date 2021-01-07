@@ -1,6 +1,5 @@
 ﻿using simplescript.Abstract;
 using System;
-using System.Collections.Generic;
 
 namespace simplescript.DSL
 {
@@ -8,7 +7,7 @@ namespace simplescript.DSL
     {
         private ProcedureStepBase<TContext> initStep;
         private ProcedureStepBase<TContext> lastAddedStep;
-  
+
         public static ProcedureDescription<TContext> Start()
         {
             return new ProcedureDescription<TContext>();

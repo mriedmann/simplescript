@@ -1,12 +1,12 @@
 using exampleservice.CustomerService;
 using exampleservice.CustomerService.Contract;
+using exampleservice.CustomerService.Controller;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Moq;
 using NUnit.Framework;
-using System.Threading.Tasks;
-using exampleservice.CustomerService.Controller;
 using System;
+using System.Threading.Tasks;
 
 namespace exampleservice.tests.CustomerService.Steps
 {

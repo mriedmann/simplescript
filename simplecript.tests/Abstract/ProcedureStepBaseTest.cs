@@ -31,7 +31,7 @@ namespace simplescript.tests.Abstract
             var instanceUnderTest = new ProcedureStepBaseTestExposal<object>();
             var predecessorMock = new ProcedureStepBaseTestExposal<object>();
             predecessorMock.SetSuccessor(instanceUnderTest);
-            
+
             await instanceUnderTest.Compensate(context);
 
             using (new AssertionScope())

@@ -2,7 +2,7 @@
 
 namespace exampleservice.TicketService.Contracts
 {
-    public class CouldNotOfferTicketForSellEvent :  EventBase
+    public class CouldNotOfferTicketForSellEvent : EventBase
     {
     }
 }
