@@ -1,6 +1,6 @@
 using exampleservice.Framework.BaseFramework;
 
-namespace exampleservice.CustomerService.Events
+namespace exampleservice.CustomerService.Contract
 {
     public class LoginFailedEvent : EventBase
     {

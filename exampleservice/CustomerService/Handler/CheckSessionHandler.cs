@@ -1,6 +1,5 @@
 ﻿using exampleservice.CustomerService.Contract;
 using exampleservice.CustomerService.Controller;
-using exampleservice.CustomerService.Events;
 using exampleservice.Framework.Abstract;
 using exampleservice.Framework.BaseFramework;
 using System;
