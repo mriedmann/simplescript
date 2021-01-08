@@ -13,7 +13,7 @@ namespace exampleservice.SellTicketService.Steps
         protected async override Task<bool> StepSpecificExecute(SellTicketContext contextType)
         {
             int rowCount = await this.dataRepository.SaveTicket(contextType.Command.Ticket);
-            if(rowCount == 0 )
+            if (rowCount == 0)
             {
                 await this.CompensatePredecssorOnly(contextType);
                 contextType.WasCompensated = true;

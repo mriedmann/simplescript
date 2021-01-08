@@ -1,6 +1,4 @@
-﻿using exampleservice.AccoutingService.Contract;
-using exampleservice.Framework.Abstract;
-using exampleservice.SellTicketService;
+﻿using exampleservice.SellTicketService;
 using exampleservice.SellTicketService.Contract;
 using exampleservice.SellTicketService.Controller;
 using FluentAssertions;

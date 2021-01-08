@@ -7,7 +7,7 @@ namespace simplescript.Abstract
         protected ProcedureStepBase<TContextType> successor;
         protected ProcedureStepBase<TContextType> predecessor;
 
-        public ProcedureStepBase() {}
+        public ProcedureStepBase() { }
 
         private void SetPredecessor(ProcedureStepBase<TContextType> predecessor)
         {
@@ -21,8 +21,8 @@ namespace simplescript.Abstract
         }
 
         protected abstract Task<bool> StepSpecificExecute(TContextType contextType);
-     
-        protected virtual Task StepSpecificCompensate(TContextType contextType)  { return Task.CompletedTask; }
+
+        protected virtual Task StepSpecificCompensate(TContextType contextType) { return Task.CompletedTask; }
 
         public async virtual Task Execute(TContextType contextType)
         {

@@ -14,8 +14,8 @@ namespace exampleservice.SellTicketService.Steps
         protected async override Task<bool> StepSpecificExecute(SellTicketContext contextType)
         {
             var reply = await this.bus.RequestAndReply(
-                new WithdrawFromCustomerCommand() 
-                { 
+                new WithdrawFromCustomerCommand()
+                {
                     Amount = contextType.Command.Ticket.Price,
                     AccountId = contextType.Command.BuyerAccountId
                 });
@@ -35,8 +35,8 @@ namespace exampleservice.SellTicketService.Steps
         protected async override Task StepSpecificCompensate(SellTicketContext contextType)
         {
             var reply = await this.bus.RequestAndReply(
-                new DepositToCustomerCommand() 
-                { 
+                new DepositToCustomerCommand()
+                {
                     Amount = contextType.Command.Ticket.Price,
                     AccountId = contextType.Command.BuyerAccountId
                 });
